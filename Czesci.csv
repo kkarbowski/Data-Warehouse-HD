@@ -1,0 +1,15 @@
+CzescID,Nazwa,StanMagazynowy,Rodzaj,CenaNettoAktualna,Podatek
+1,Opony ma³e,0,Ogumienie,0,23
+2,Opony du¿e,0,Ogumienie,0,23
+3,Olej 1L,0,Oleje,0,8
+4,Wycieraczki,0,Czesci Eksploatacyjne,0,23
+5,Szyba przednia,0,Szyby,0,23
+6,Szyba tylna,0,Szyby,0,23
+7,Szyba boczna,0,Szyby,0,23
+8,Silnik,0,Naped,0,23
+9,Bezpiecznik,0,Elektryka,0,23
+10,Œwieca Zap³onowa,0,Elektryka,0,23
+11,Skrzynia Biegów,0,Naped,0,23
+12,Rozrusznik,0,Elektryka,0,23
+13,Maska,0,Nadwozie,0,23
+14,Œruby ma³e,0,Inne,0,8
