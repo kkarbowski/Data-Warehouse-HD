@@ -9,5 +9,6 @@ z.DataRealizacjiZamowienia = (
 	SELECT MAX(DataRealizacjiZamowienia) FROM dbo.Zamowienia WHERE ZamowienieID = pz.FK_Zamowienie
 )
 
-UPDATE dbo.Czesci SET StanMagazynowy = (RAND()*20) + 5
+UPDATE dbo.Czesci SET StanMagazynowy = ABS(CHECKSUM(NEWID()))%20 + 5
 
+UPDATE dbo.Klienci SET Imie = NULL, Nazwisko = NULL WHERE NazwaFirmy IS NOT NULL

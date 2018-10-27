@@ -18,12 +18,13 @@ WHERE rn > 1
 SET @id = (SELECT COUNT(*) FROM #tmp1)
 
 INSERT INTO #tmp1
-SELECT TOP(@id/10 + 1) @id + ROW_NUMBER() OVER(ORDER BY SerwisID), MAX(CASE WHEN k.NazwaFirmy IS NOT NULL THEN k.NazwaFirmy ELSE k.Imie END), MAX(k.Nazwisko),  MAX(CONVERT(VARCHAR(16),s.DataRozpoczeciaSerwisu,120)), MAX(u.RodzajUsterki), '', 'TAK'
-FROM dbo.Serwisy s, dbo.Klienci k, dbo.Pojazdy p, dbo.Usterki u
+SELECT TOP(@id/10 + 1) @id + ROW_NUMBER() OVER(ORDER BY SerwisID),CASE WHEN k.NazwaFirmy IS NOT NULL THEN k.NazwaFirmy ELSE k.Imie END, k.Nazwisko, CONVERT(VARCHAR(16),s.DataRozpoczeciaSerwisu,120), u.RodzajUsterki, '', 'TAK'
+FROM dbo.Klienci k, dbo.Pojazdy p,
+dbo.Serwisy s LEFT JOIN dbo.Usterki u ON u.FK_Serwis = s.SerwisID
 WHERE s.FK_Pojazd = p.VIN AND
-p.FK_Klient = k.KlientID AND
-U.FK_Serwis = s.SerwisID
-GROUP BY s.SerwisID
+p.FK_Klient = k.KlientID
+
+UPDATE #tmp1 SET RodzajUsterki = 'Napêd' WHERE RodzajUsterki IS NULL
 
 SELECT * FROM #tmp1
 ORDER BY SerwisID
