@@ -1,0 +1,145 @@
+create database serwisSystem
+go
+
+use serwisSystem
+go
+
+CREATE TABLE Klienci(
+	KlientID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	Imie VARCHAR(30),
+	Nazwisko VARCHAR(30),
+	NIP CHAR(10),
+	NazwaFirmy VARCHAR(40),
+	NumerTelefonu VARCHAR(15),
+	Miasto VARCHAR(30),
+	Ulica VARCHAR(30),
+	NumerBudynku VARCHAR(8)
+)
+go
+
+CREATE TABLE Pojazdy(
+	VIN CHAR(17) PRIMARY KEY,
+	Marka VARCHAR(20) NOT NULL,
+	Model VARCHAR(20) NOT NULL,
+	RokProdukcji INTEGER NOT NULL,
+	SkrzyniaBiegow VARCHAR(20) NOT NULL,
+	Silnik VARCHAR(20) NOT NULL,
+	FK_Klient INTEGER FOREIGN KEY REFERENCES Klienci NOT NULL
+)
+go 
+
+
+CREATE TABLE Serwisy(
+	SerwisID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	DataRozpoczeciaSerwisu DATETIME NOT NULL,
+	DataZakonczeniaSerwisu DATETIME,
+	FK_Pojazd CHAR(17) FOREIGN KEY REFERENCES Pojazdy NOT NULL
+)
+go
+
+CREATE TABLE Pracownicy(
+	PracownikID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	Imie VARCHAR(30) NOT NULL,
+	Nazwisko VARCHAR(30) NOT NULL,
+	Stanowisko VARCHAR(30) NOT NULL
+)
+go
+
+CREATE TABLE Faktury(
+	NumerFaktury VARCHAR(20) PRIMARY KEY,
+	DataWystawienia DATETIME NOT NULL,
+	SposobPlatnosci VARCHAR(20) NOT NULL,
+	FK_Serwis INTEGER FOREIGN KEY REFERENCES Serwisy NOT NULL,
+	FK_Pracownik INTEGER FOREIGN KEY REFERENCES Pracownicy NOT NULL
+)
+go
+
+CREATE TABLE Usterki(
+	UsterkaID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	NaprawianyElement VARCHAR(40) NOT NULL,
+	RodzajUsterki VARCHAR(30) NOT NULL,
+	Stan VARCHAR(30) NOT NULL,
+	FK_Serwis INTEGER FOREIGN KEY REFERENCES Serwisy NOT NULL
+)
+go
+
+CREATE TABLE Czesci(
+	CzescID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	Nazwa VARCHAR(30) NOT NULL,
+	StanMagazynowy DECIMAL(16,2) NOT NULL,
+	Rodzaj VARCHAR(30) NOT NULL,
+	CenaNettoAktualna DECIMAL(10,2) NOT NULL,
+	Podatek DECIMAL(5,2) NOT NULL
+)
+go
+
+CREATE TABLE Uslugi(
+	Nazwa VARCHAR(30) PRIMARY KEY,
+	Opis VARCHAR(100),
+	CenaAktualnaNetto DECIMAL(10,2) NOT NULL
+)
+go
+
+CREATE TABLE Serwis_Usluga(
+	FK_Usluga VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Uslugi,
+	FK_Serwis INTEGER NOT NULL FOREIGN KEY REFERENCES Serwisy,
+	CenaNetto DECIMAL(10,2) NOT NULL,
+	PRIMARY KEY(FK_Usluga, FK_Serwis)
+)
+go
+
+CREATE TABLE PozycjaFaktury(
+	PozycjaID INTEGER IDENTITY(1,1),
+	FK_Faktura VARCHAR(20) FOREIGN KEY REFERENCES Faktury,
+	CenaNetto DECIMAL(10,2) NOT NULL,
+	Ilosc INTEGER NOT NULL,
+	PRIMARY KEY(PozycjaID, FK_Faktura)
+)
+go
+
+CREATE TABLE Usterka_Pracownik(
+	FK_Usterka INTEGER FOREIGN KEY REFERENCES Usterki,
+	FK_Pracownik INTEGER FOREIGN KEY REFERENCES Pracownicy,
+	PRIMARY KEY(FK_Usterka, FK_Pracownik)
+)
+go
+
+CREATE TABLE Dostawcy(
+	DostawcaID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	Nazwa VARCHAR(40) NOT NULL,
+	NumerTelefonu VARCHAR(15) NOT NULL,
+	NIP CHAR(10) NOT NULL,
+	Miasto VARCHAR(30) NOT NULL,
+	Ulica VARCHAR(40) NOT NULL,
+	NumerBudynku VARCHAR(8) NOT NULL
+)
+go
+
+CREATE TABLE Zamowienia(
+	ZamowienieID INTEGER IDENTITY(1,1) PRIMARY KEY,
+	DataWyslaniaZamowienia DATETIME,
+	DataRealizacjiZamowienia DATETIME,
+	FK_Pracownik INTEGER FOREIGN KEY REFERENCES Pracownicy NOT NULL,
+	FK_Dostawca INTEGER FOREIGN KEY REFERENCES Dostawcy NOT NULL
+)
+go
+
+CREATE TABLE PozycjaZamowienia(
+	PozycjaID INTEGER IDENTITY(1,1),
+	FK_Zamowienie INTEGER FOREIGN KEY REFERENCES Zamowienia,
+	Ilosc INTEGER NOT NULL,
+	CenaNetto DECIMAL(10,2) NOT NULL,
+	FK_Czesc INTEGER FOREIGN KEY REFERENCES Czesci,
+	PRIMARY KEY(PozycjaID, FK_Zamowienie)
+)
+go
+
+CREATE TABLE Usterka_PozycjaZam(
+	FK_Usterka INTEGER FOREIGN KEY REFERENCES Usterki,
+	FK_Zamowienie INTEGER,
+	FK_PozycjaZam INTEGER,
+	FOREIGN KEY(FK_Zamowienie, FK_PozycjaZam) REFERENCES PozycjaZamowienia,
+	CenaNetto DECIMAL(10,2) NOT NULL,
+	PRIMARY KEY(FK_Usterka, FK_Zamowienie, FK_PozycjaZam)
+)
+go
