@@ -10,20 +10,15 @@ dbo.Serwisy s LEFT JOIN dbo.Usterki u ON u.FK_Serwis = s.SerwisID
 WHERE s.FK_Pojazd = p.VIN AND
 p.FK_Klient = k.KlientID
 
-
 DELETE x
-FROM (SELECT *, rn=row_number() over (partition by SerwisID order by SerwisID) FROM #tmp1) x
+FROM (SELECT *, rn=ROW_NUMBER() OVER (PARTITION BY SerwisID ORDER BY SerwisID) FROM #tmp1) x
 WHERE rn > 1
 
 SET @id = (SELECT COUNT(*) FROM #tmp1)
 
 INSERT INTO #tmp1
-SELECT TOP(@id/10 + 1) @id + ROW_NUMBER() OVER(ORDER BY SerwisID),CASE WHEN k.NazwaFirmy IS NOT NULL THEN k.NazwaFirmy ELSE k.Imie END, k.Nazwisko, CONVERT(VARCHAR(16),s.DataRozpoczeciaSerwisu,120), u.RodzajUsterki, '', 'TAK'
-FROM dbo.Klienci k, dbo.Pojazdy p,
-dbo.Serwisy s LEFT JOIN dbo.Usterki u ON u.FK_Serwis = s.SerwisID
-WHERE s.FK_Pojazd = p.VIN AND
-p.FK_Klient = k.KlientID
-
+SELECT TOP(@id/10 + 1) @id + ROW_NUMBER() OVER(ORDER BY SerwisID), [Imie/Nazwa firmy], Nazwisko, CONVERT(VARCHAR(16),DATEADD(DAY, CHECKSUM(NEWID())%100 + 5, [Data i godzina wizyty]),120), RodzajUsterki, '', 'TAK'
+FROM #tmp1
 UPDATE #tmp1 SET RodzajUsterki = 'Napêd' WHERE RodzajUsterki IS NULL
 
 SELECT * FROM #tmp1
