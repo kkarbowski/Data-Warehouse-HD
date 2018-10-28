@@ -1,0 +1,16 @@
+Do uruchomienia generatora niezbêdny jest program RedGate SQL Date Generator
+
+Instrukcja Generacja danych dla T1:
+1. Nale¿y za³adowaæ scheme do bazy danych
+2. Nale¿y uruchomiæ program RedGate SQL Date Generator i otworzyæ w nim projekt Generator_T1.sqlgen. Dodatkowo dla tabel Czesci i Dostawcy nale¿y za³adowaæ odpowiednio pliki Czesci.csv oraz Dostawcy.csv
+3. Nale¿y nacisn¹æ przycisk Generate Data. Usunie on star¹ zawartoœæ bazy danych i za³aduje nowe dane. Do zmiany liczby rekordów generowanych s³u¿y jeden parametr w programie. 
+4. Kolejnym krokiem jest uruchomienie skryptu UjednolicenieBazy.sql - uspójnia on bazê pod k¹tem biznesowym
+5. W taki sposób wygenerowaliœmy Ÿród³o bazodanowe dla T1, aby wygenerowaæ Ÿród³o z excela dla T1 nale¿y uruchomiæ skrypty ExcelWizyty.sql oraz ExcelWydatki.sql
+
+Instrukcja Generacja danych dla T2:
+1. Nale¿y przeprowadziæ kroki 1-4 z instrukcji dla T1
+2. Nale¿y uruchomiæ program RedGate SQL Date Generator i otworzyæ w nim projekt Generator_T2.sqlgen. 
+3. Nale¿y nacisn¹æ przycisk Generate Data. Dogeneruje on odpowiednie dane tak aby uzyskaæ przyrost w tabelach faktów
+4. Kolejnym krokiem jest uruchomienie skryptu UjednolicenieBazy.sql - uspójnia on bazê pod k¹tem biznesowym
+5. Nastêpnie nale¿y uruchomiæ skrypt Updates_T2.sql, który doda odpowiednie aktualizacje do tabeli wymiarów
+6. W taki sposób wygenerowaliœmy Ÿród³o bazodanowe dla T2, aby wygenerowaæ Ÿród³o z excela dla T2 nale¿y uruchomiæ skrypty ExcelWizyty.sql oraz ExcelWydatki.sql    
