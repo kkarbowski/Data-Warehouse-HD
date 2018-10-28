@@ -8,6 +8,6 @@ Instrukcja Generacja danych dla T1:
 5. W taki sposób wygenerowaliœmy Ÿród³o bazodanowe dla T1, aby wygenerowaæ Ÿród³o z excela dla T1 nale¿y uruchomiæ skrypty ExcelWizyty.sql oraz ExcelWydatki.sql
 
 Instrukcja Generacja danych dla T2:
-1. Nale¿y przeprowadziæ kroki 2-4 z instrukcji dla T1
+1. Nale¿y przeprowadziæ kroki 2-4 z instrukcji dla T1 wybierajc projekt projekt Generator_T2.sqlgen
 2. Nastêpnie nale¿y uruchomiæ skrypt Updates_T2.sql, który doda odpowiednie aktualizacje do tabeli wymiarów
 3. Nale¿y przeprowadziæ krok 5 z instrukcji dla T1
